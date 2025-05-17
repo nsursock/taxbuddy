@@ -566,10 +566,12 @@ window.transactionsTable = (address, chain, year = '2024') => ({
   invested() {
     let sum = 0;
     const ownWallets = this.$store.ownWallets || [];
+    // Fallback: if no ownWallets are set, treat all as external for demo realism
+    const treatAllAsExternal = ownWallets.length === 0;
     for (const tx of this.filteredTransactions) {
       if (tx.in && tx.in.wallet && tx.in.wallet.length > 0) {
         let from = (tx.in.walletFull || tx.in.wallet).toLowerCase();
-        if (!ownWallets.includes(from)) {
+        if (treatAllAsExternal || !ownWallets.includes(from)) {
           let amt = parseFloat(tx.local && tx.local !== '—' ? tx.local.replace(/[^0-9.\-]/g, '') : '0');
           sum += isNaN(amt) ? 0 : amt;
         }
@@ -580,10 +582,12 @@ window.transactionsTable = (address, chain, year = '2024') => ({
   cashedOut() {
     let sum = 0;
     const ownWallets = this.$store.ownWallets || [];
+    // Fallback: if no ownWallets are set, treat all as external for demo realism
+    const treatAllAsExternal = ownWallets.length === 0;
     for (const tx of this.filteredTransactions) {
       if (tx.out && tx.out.wallet && tx.out.wallet.length > 0) {
         let to = (tx.out.walletFull || tx.out.wallet).toLowerCase();
-        if (!ownWallets.includes(to)) {
+        if (treatAllAsExternal || !ownWallets.includes(to)) {
           let amt = parseFloat(tx.local && tx.local !== '—' ? tx.local.replace(/[^0-9.\-]/g, '') : '0');
           sum += isNaN(amt) ? 0 : amt;
         }

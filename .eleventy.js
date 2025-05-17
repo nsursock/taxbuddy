@@ -34,6 +34,10 @@ export default function (eleventyConfig) {
 
   eleventyConfig.addPassthroughCopy('src/assets/css')
   eleventyConfig.addPassthroughCopy('src/assets/js')
+  // eleventyConfig.addPassthroughCopy({
+  //   'node_modules/flyonui/flyonui.js': 'assets/flyonui.js',
+  //   'node_modules/notyf/notyf.min.css': 'assets/notyf.min.css'
+  // })
 
 
   /* --- PLUGINS --- */

@@ -225,6 +225,13 @@ eleventyNavigation:
               </div>
             </div>
           </div>
+          <!-- Fallback warning if no ownWallets are set -->
+          <div class="flex justify-center mt-2" x-show="$store.ownWallets.length === 0">
+            <div class="alert alert-warning bg-warning/20 border-warning text-warning-content max-w-xl">
+              <span class="icon-[tabler--alert-triangle] mr-2"></span>
+              Stats are using a fallback: all addresses are treated as external for<br>demo purposes. Set your own wallets in <br>the environment for accurate stats.
+            </div>
+          </div>
         </div>
       </template>
       <template x-if="section === 'reports'">

@@ -9,6 +9,8 @@
     "dev": "npx @11ty/eleventy --serve",
     "serve": "npx @11ty/eleventy --serve",
     "watch": "npx @11ty/eleventy --watch",
+    "copy:flyonui": "cp node_modules/flyonui/flyonui.js src/assets/js/",
+    "copy:notyf": "cp node_modules/notyf/notyf.min.css src/assets/css/",
     "build": "npx @11ty/eleventy",
     "clean": "del-cli _site"
   },

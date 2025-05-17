@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="{{ meta.lang or site.lang }}" data-theme="valorant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ site.title }} - {{ title or meta.title }}</title>
+    {% include "meta.njk" %}
+    <!-- Valorant : 'Work Sans' -->
+    <link 
+      href="https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap" 
+      rel="stylesheet"
+    />
+    <style>
+      html, body {
+        font-family: 'Work Sans', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+      }
+    </style>
+    <link rel="stylesheet" href="{{ '/node_modules/notyf/notyf.min.css' | url }}" />
+  </head>
+
+  <body>
+
+    {% include "header.njk" %}
+
+    <main id="main" class="max-w-6xl mx-auto px-6">
+      <div class="">
+        {% if hero_picture %}
+          <div class="hero-image mb-8">
+            {% image "src/assets/images/" + hero_picture + ".png", title, "100vw" %}
+          </div>
+        {% endif %}
+        {{ content | safe }}
+      </div>
+    </main>
+
+    {% include "footer.njk" %}
+
+    {% include "chain-modal.njk" %}
+
+    <script src="{{ '/node_modules/flyonui/flyonui.js' | url }}"></script>
+    <script type="module" src="{{ '/assets/js/index.js' | url }}"></script>
+    {# <script src="{{ '/node_modules/flyonui/accordion.js' | url }}"></script> #}
+  </body>
+</html>

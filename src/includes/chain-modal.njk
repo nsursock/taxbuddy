@@ -1,0 +1,27 @@
+<!-- Chain Select Modal (FlyonUI middle center modal) -->
+<div x-data>
+  <div id="middle-center-modal" class="overlay modal overlay-open:opacity-100 overlay-open:duration-300 modal-middle hidden" role="dialog" tabindex="-1">
+    <div class="modal-dialog overlay-open:opacity-100 overlay-open:duration-300">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title text-2xl font-bold text-accent">Select a Chain</h3>
+          <button type="button" class="btn btn-text btn-circle btn-sm absolute end-3 top-3" aria-label="Close" data-overlay="#middle-center-modal">
+            <span class="icon-[tabler--x] size-4"></span>
+          </button>
+        </div>
+        <div class="modal-body flex flex-col gap-6 items-center">
+          <div class="flex w-full items-center gap-6 justify-center">
+            <button type="button" class="custom-option flex flex-col items-center gap-2 cursor-pointer" @click="$store.wallet.selectChain('Solana')">
+              <span class="icon-[tabler--currency-solana] size-10"></span>
+              <span class="label-text">Solana</span>
+            </button>
+            <button type="button" class="custom-option flex flex-col items-center gap-2 cursor-pointer" @click="console.log('ETH Alpine click'); $store.wallet.selectChain('Ethereum')">
+              <span class="icon-[tabler--currency-ethereum] size-10"></span>
+              <span class="label-text">Ethereum</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 

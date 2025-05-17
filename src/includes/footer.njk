@@ -1,0 +1,61 @@
+<footer class="footer w-full bg-base-200/60 p-10 border-t-2 border-accent/40 max-w-full mx-0">
+  <form class="gap-6">
+    <div class="flex items-center gap-2 text-2xl font-extrabold text-accent">
+      <span class="icon-[tabler--flame] text-primary text-3xl animate-wiggle"></span>
+      <span>TaxBuddy</span>
+    </div>
+    <p class="text-base-content text-sm">Effortless crypto tax reports.<br />Privacy-first. Fast. Accurate.</p>
+    <fieldset>
+      <label class="label-text" for="subscribeNewsletter"> Subscribe to newsletter </label>
+      <div class="flex flex-wrap sm:flex-nowrap w-full gap-1">
+        <input class="input input-sm" id="subscribeNewsletter" placeholder="you@email.com" />
+        <button class="btn btn-sm btn-accent">Subscribe</button>
+      </div>
+    </fieldset>
+  </form>
+  <nav class="text-base-content">
+    <h6 class="footer-title">Product</h6>
+    <a href="/" class="link link-hover">Home</a>
+    <a href="/about" class="link link-hover">About</a>
+    <a href="/posts" class="link link-hover">Blog</a>
+    <a href="#" class="link link-hover">Pricing</a>
+  </nav>
+  <nav class="text-base-content">
+    <h6 class="footer-title">Company</h6>
+    <a href="#" class="link link-hover">Contact</a>
+    <a href="#" class="link link-hover">Careers</a>
+    <a href="#" class="link link-hover">Press</a>
+  </nav>
+  <nav class="text-base-content">
+    <h6 class="footer-title">Legal</h6>
+    <a href="#" class="link link-hover">Terms of use</a>
+    <a href="#" class="link link-hover">Privacy policy</a>
+    <a href="#" class="link link-hover">Cookie policy</a>
+  </nav>
+</footer>
+<footer class="footer w-full bg-base-200/60 border-base-content/25 border-t px-6 py-4 max-w-full mx-0">
+  <div class="flex w-full items-center justify-between">
+    <aside class="grid-flow-col items-center">
+      <p>&copy; {% year %} <a class="link link-hover font-medium" href="/">TaxBuddy</a></p>
+    </aside>
+    <div class="flex h-5 gap-4">
+      <a href="#" class="link" aria-label="Github Link">
+        <span class="icon-[tabler--brand-github] size-5"></span>
+      </a>
+      <a href="#" class="link" aria-label="X Link">
+        <span class="icon-[tabler--brand-x] size-5"></span>
+      </a>
+      <a href="#" class="link" aria-label="Linkedin Link">
+        <span class="icon-[tabler--brand-linkedin] size-5"></span>
+      </a>
+    </div>
+  </div>
+</footer>
+
+<style>
+@keyframes wiggle {
+  0%, 100% { transform: rotate(-8deg); }
+  50% { transform: rotate(8deg); }
+}
+.animate-wiggle { animation: wiggle 2.5s infinite; }
+</style>

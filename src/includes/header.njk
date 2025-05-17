@@ -1,0 +1,42 @@
+<header class="w-full bg-base-200/60 border-b-2 border-accent/40 shadow-lg py-4 px-0 mb-8">
+  <div class="flex items-center justify-between px-8">
+    <a href="/" class="flex items-center gap-2 text-2xl font-extrabold text-accent">
+      <span class="icon-[tabler--flame] text-primary text-3xl animate-wiggle"></span>
+      <span>TaxBuddy</span>
+    </a>
+    <nav>
+      <ul class="flex gap-8 text-base font-semibold">
+        <li><a href="/" class="link link-hover text-base-content hover:text-accent transition-colors">Home</a></li>
+        <li><a href="/about/" class="link link-hover text-base-content hover:text-accent transition-colors">About</a></li>
+        <li><a href="/posts" class="link link-hover text-base-content hover:text-accent transition-colors">Blog</a></li>
+        {# <li><a href="#get-started" class="btn btn-accent btn-sm font-bold ml-2">Get Started</a></li> #}
+      </ul>
+    </nav>
+    <div x-data class="flex items-center gap-2">
+      <template x-if="!$store.wallet.address">
+        <div class="relative ml-4">
+          <button
+            class="btn btn-primary btn-sm font-bold"
+            type="button"
+            @click="$store.wallet.connectOKX()"
+            :disabled="$store.wallet.connecting"
+          >Connect Wallet</button>
+        </div>
+      </template>
+      <template x-if="$store.wallet.address && $store.wallet.chain">
+        <div class="dropdown relative inline-flex ml-4">
+          <button type="button" class="dropdown-toggle btn btn-md btn-outline flex items-center gap-2" aria-haspopup="menu" aria-expanded="false" aria-label="Wallet Actions">
+            <span :class="'icon-[' + $store.wallet.chainIcon() + '] text-primary text-lg'"></span>
+            <span class="font-mono text-xs" x-text="$store.wallet.address.slice(0,6) + '...' + $store.wallet.address.slice(-4)"></span>
+            <span class="icon-[tabler--chevron-down] dropdown-open:rotate-180 size-4"></span>
+          </button>
+          <ul class="dropdown-menu dropdown-open:opacity-100 hidden min-w-40" role="menu">
+            <li><button class="dropdown-item w-full text-left" @click="$store.wallet.disconnect()">Disconnect</button></li>
+            <li><button class="dropdown-item w-full text-left" @click="$store.wallet.needsChainSelect = true; setTimeout(() => { if (window.HSOverlay && typeof window.HSOverlay.open === 'function') { window.HSOverlay.open('#middle-center-modal'); } }, 100);">Switch Chain</button></li>
+            <li><button class="dropdown-item w-full text-left" @click="$store.wallet.reconnect()">Reconnect</button></li>
+          </ul>
+        </div>
+      </template>
+    </div>
+  </div>
+</header>

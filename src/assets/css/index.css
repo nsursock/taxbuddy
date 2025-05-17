@@ -1,0 +1,14 @@
+@import "tailwindcss";
+@import "flyonui/variants.css";
+@import "flyonui/src/vendor/notyf.css";
+
+@plugin "flyonui";
+@plugin "@iconify/tailwind4";
+
+/* If you gitignored node_modules use below method */
+@source "./node_modules/flyonui/dist/index.js"; /* Require only if you want to use FlyonUI JS component */
+@source "./node_modules/flyonui/dist/accordion.js"; 
+
+@plugin "flyonui" {
+  themes: valorant --default;
+}

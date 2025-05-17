@@ -8,14 +8,14 @@ eleventyNavigation:
   order: 1
 ---
 
-<section class="py-20 bg-base-200/60 rounded-3xl border-2 border-accent/40 shadow-lg text-center w-full">
+<section class="py-20 bg-base-200/60 border-2 border-accent/40 shadow-lg text-center w-full rounded-box">
   <div class="flex flex-col items-center gap-4 mb-8 px-4 md:px-0">
     <span class="icon-[tabler--flame] text-primary text-6xl animate-wiggle"></span>
     <h1 class="text-5xl md:text-6xl font-extrabold text-accent mb-2">You're in good hands</h1>
     <p class="text-xl md:text-2xl text-base-content mb-4 max-w-2xl">Effortlessly generate your crypto tax reports. Connect your wallet, import transactions, and download your report. Fast, accurate, and privacy-first.</p>
     <div x-data class="flex flex-col sm:flex-row gap-3 justify-center">
       <template x-if="!$store.wallet.address">
-        <button type="button" class="btn btn-primary btn-lg px-10 py-4 text-lg font-semibold shadow-xl" @click="$store.wallet.connectOKX()" :disabled="$store.wallet.connecting">
+        <button type="button" class="btn btn-primary btn-lg px-10 py-4 text-lg font-semibold shadow-xl rounded-btn" @click="$store.wallet.connectOKX()" :disabled="$store.wallet.connecting">
           <span x-show="!$store.wallet.connecting">Connect OKX Wallet</span>
           <span x-show="$store.wallet.connecting">Connecting...</span>
         </button>
@@ -24,7 +24,7 @@ eleventyNavigation:
         <div class="flex items-center gap-2">
           <span :class="'icon-[' + $store.wallet.chainIcon() + '] text-primary text-lg'"></span>
           <span class="font-mono text-xs" x-text="$store.wallet.address.slice(0,6) + '...' + $store.wallet.address.slice(-4)"></span>
-          <button class="btn btn-xs btn-outline ml-2" @click="$store.wallet.disconnect()">Disconnect</button>
+          <button class="btn btn-xs btn-outline ml-2 rounded-btn" @click="$store.wallet.disconnect()">Disconnect</button>
         </div>
       </template>
     </div>
@@ -32,17 +32,17 @@ eleventyNavigation:
 </section>
 
 <section class="py-16 w-full grid grid-cols-1 md:grid-cols-3 gap-8 px-4 md:px-16">
-  <div class="bg-white/80 border border-accent/20 rounded-2xl p-8 flex flex-col items-center shadow-md">
+  <div class="bg-white/80 border border-accent/20 p-8 flex flex-col items-center shadow-md rounded-box">
     <span class="icon-[tabler--wallet] text-4xl text-primary mb-4"></span>
     <h3 class="font-bold text-xl mb-2 text-accent">Connect Your Wallet</h3>
     <p class="text-base-content">Seamlessly link your crypto wallets and exchanges in seconds.</p>
   </div>
-  <div class="bg-white/80 border border-accent/20 rounded-2xl p-8 flex flex-col items-center shadow-md">
+  <div class="bg-white/80 border border-accent/20 p-8 flex flex-col items-center shadow-md rounded-box">
     <span class="icon-[tabler--file-text] text-4xl text-primary mb-4"></span>
     <h3 class="font-bold text-xl mb-2 text-accent">Import Transactions</h3>
     <p class="text-base-content">Automatically import and categorize all your crypto transactions.</p>
   </div>
-  <div class="bg-white/80 border border-accent/20 rounded-2xl p-8 flex flex-col items-center shadow-md">
+  <div class="bg-white/80 border border-accent/20 p-8 flex flex-col items-center shadow-md rounded-box">
     <span class="icon-[tabler--report-money] text-4xl text-primary mb-4"></span>
     <h3 class="font-bold text-xl mb-2 text-accent">Download Reports</h3>
     <p class="text-base-content">Generate accurate tax reports ready for filing in just a few clicks.</p>
@@ -50,7 +50,7 @@ eleventyNavigation:
 </section>
 
 <section class="py-16 w-full grid md:grid-cols-2 gap-12 items-center px-4 md:px-16">
-  <div class="bg-base-200/60 rounded-2xl p-10 border border-accent/20 shadow-md">
+  <div class="bg-base-200/60 p-10 border border-accent/20 shadow-md rounded-box">
     <h2 class="text-3xl font-bold mb-4 text-accent">Why TaxBuddy?</h2>
     <ul class="space-y-4 text-base-content">
       <li class="flex items-center gap-3"><span class="icon-[tabler--shield-check] text-2xl text-green-500"></span> Privacy-first, your data is always safe.</li>
@@ -59,14 +59,14 @@ eleventyNavigation:
     </ul>
   </div>
   <div class="flex flex-col gap-6">
-    <div class="bg-white rounded-2xl shadow-xl p-8">
+    <div class="bg-white shadow-xl p-8 rounded-box">
       <p class="font-semibold text-lg mb-2">“TaxBuddy made my crypto taxes a breeze. Highly recommend!”</p>
       <div class="flex items-center gap-3 mt-4">
         <span class="icon-[tabler--user-circle] text-2xl text-blue-400"></span>
         <span class="text-base-content font-medium">Alex P.</span>
       </div>
     </div>
-    <div class="bg-white rounded-2xl shadow-xl p-8">
+    <div class="bg-white shadow-xl p-8 rounded-box">
       <p class="font-semibold text-lg mb-2">“Super fast, super easy, and I love the privacy focus.”</p>
       <div class="flex items-center gap-3 mt-4">
         <span class="icon-[tabler--user-circle] text-2xl text-blue-400"></span>
@@ -86,18 +86,18 @@ eleventyNavigation:
     </ul>
   </div>
   <div class="flex justify-center">
-    <img src="/assets/images/crypto-dashboard.png" alt="Crypto dashboard screenshot" class="rounded-2xl shadow-lg w-full max-w-md border border-accent/20">
+    <img src="/assets/images/crypto-dashboard.png" alt="Crypto dashboard screenshot" class="shadow-lg w-full max-w-md border border-accent/20 rounded-box">
   </div>
 </section>
 
-<section id="get-started" class="py-20 bg-base-200/60 rounded-3xl border-2 border-accent/40 shadow-lg text-center w-full my-16">
+<section id="get-started" class="py-20 bg-base-200/60 border-2 border-accent/40 shadow-lg text-center w-full my-16 rounded-box">
   <div class="flex flex-col items-center gap-4 mb-8 px-4 md:px-0">
     <span class="icon-[tabler--flame] text-primary text-6xl animate-wiggle"></span>
     <h2 class="text-4xl font-extrabold mb-4 text-accent">Ready to get started?</h2>
     <p class="text-lg mb-8 text-base-content">Join thousands of users who trust TaxBuddy for their crypto tax needs.</p>
     <div class="flex flex-col sm:flex-row gap-3 justify-center">
       <template x-if="!$store.wallet.address">
-        <button type="button" class="btn btn-primary btn-lg px-10 py-4 text-lg font-semibold shadow-xl" @click="$store.wallet.connectOKX()" :disabled="$store.wallet.connecting">
+        <button type="button" class="btn btn-primary btn-lg px-10 py-4 text-lg font-semibold shadow-xl rounded-btn" @click="$store.wallet.connectOKX()" :disabled="$store.wallet.connecting">
           <span x-show="!$store.wallet.connecting">Connect OKX Wallet</span>
           <span x-show="$store.wallet.connecting">Connecting...</span>
         </button>
@@ -106,14 +106,14 @@ eleventyNavigation:
         <div class="flex items-center gap-2">
           <span :class="'icon-[' + $store.wallet.chainIcon() + '] text-primary text-lg'"></span>
           <span class="font-mono text-xs" x-text="$store.wallet.address.slice(0,6) + '...' + $store.wallet.address.slice(-4)"></span>
-          <button class="btn btn-xs btn-outline ml-2" @click="$store.wallet.disconnect()">Disconnect</button>
+          <button class="btn btn-xs btn-outline ml-2 rounded-btn" @click="$store.wallet.disconnect()">Disconnect</button>
         </div>
       </template>
     </div>
     <div class="mt-10 max-w-md w-full mx-auto">
       <form class="flex flex-wrap sm:flex-nowrap gap-2 items-center justify-center">
         <input class="input input-md flex-1" type="email" placeholder="you@email.com" required />
-        <button class="btn btn-accent btn-md">Subscribe to newsletter</button>
+        <button class="btn btn-accent btn-md rounded-btn">Subscribe to newsletter</button>
       </form>
     </div>
   </div>
@@ -122,20 +122,20 @@ eleventyNavigation:
 <!-- FlyonUI Modal -->
 <div id="wallet-modal" class="overlay modal overlay-open:opacity-100 overlay-open:duration-300 hidden" role="dialog" tabindex="-1">
   <div class="modal-dialog overlay-open:opacity-100 overlay-open:duration-300">
-    <div class="modal-content">
+    <div class="modal-content rounded-box">
       <div class="modal-header">
         <h3 class="modal-title text-2xl font-bold text-accent">Select a Chain</h3>
-        <button type="button" class="btn btn-text btn-circle btn-sm absolute end-3 top-3" aria-label="Close" data-overlay="#wallet-modal">
+        <button type="button" class="btn btn-text btn-circle btn-sm absolute end-3 top-3 rounded-btn" aria-label="Close" data-overlay="#wallet-modal">
           <span class="icon-[tabler--x] size-4"></span>
         </button>
       </div>
       <div class="modal-body flex flex-col gap-4">
-        <button type="button" class="btn btn-outline btn-primary w-full" @click="$store.wallet.connectSolana(); HSOverlay.close('#wallet-modal'); window.location.href='/dashboard'">Solana</button>
-        <button type="button" class="btn btn-outline btn-primary w-full" @click="$store.wallet.connectEthereum('Ethereum'); HSOverlay.close('#wallet-modal'); window.location.href='/dashboard'">Ethereum</button>
-        <button type="button" class="btn btn-outline btn-primary w-full" @click="$store.wallet.connectEthereum('Arbitrum'); HSOverlay.close('#wallet-modal'); window.location.href='/dashboard'">Arbitrum</button>
+        <button type="button" class="btn btn-outline btn-primary w-full rounded-btn" @click="$store.wallet.connectSolana(); HSOverlay.close('#wallet-modal'); window.location.href='/dashboard'">Solana</button>
+        <button type="button" class="btn btn-outline btn-primary w-full rounded-btn" @click="$store.wallet.connectEthereum('Ethereum'); HSOverlay.close('#wallet-modal'); window.location.href='/dashboard'">Ethereum</button>
+        <button type="button" class="btn btn-outline btn-primary w-full rounded-btn" @click="$store.wallet.connectEthereum('Arbitrum'); HSOverlay.close('#wallet-modal'); window.location.href='/dashboard'">Arbitrum</button>
       </div>
       <div class="modal-footer mt-8">
-        <button type="button" class="btn" data-overlay="#wallet-modal">Cancel</button>
+        <button type="button" class="btn rounded-btn" data-overlay="#wallet-modal">Cancel</button>
       </div>
     </div>
   </div>

@@ -4,7 +4,9 @@ import { Notyf } from 'notyf';
 // import 'flyonui/src/vendor/notyf.css'; // Make sure this path is correct for your setup
 
 import Alpine from 'alpinejs'
- 
+import { themeChange } from "theme-change";
+themeChange();
+
 window.Alpine = Alpine
 
 // Add Alpine extensions here

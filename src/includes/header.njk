@@ -37,6 +37,125 @@
           </ul>
         </div>
       </template>
+      <!-- Theme Controller Dropdown Start -->
+      <div class="dropdown relative inline-flex ml-2">
+        <button id="dropdown-default" type="button" class="dropdown-toggle btn btn-primary" aria-haspopup="menu" aria-expanded="false" aria-label="Dropdown" >
+          <span class="icon-[tabler--palette] size-5 mr-2"></span>
+          Theme
+          <span class="icon-[tabler--chevron-down] dropdown-open:rotate-180 size-4"></span>
+        </button>
+        <ul class="dropdown-menu dropdown-open:opacity-100 hidden min-w-60" role="menu" aria-orientation="vertical" aria-labelledby="dropdown-default" >
+          <li>
+            <label class="w-full cursor-pointer">
+              <input type="radio" name="theme-dropdown" value="light" data-set-theme="light" class="peer sr-only" aria-label="Light" checked />
+              <span class="flex items-center gap-2 rounded px-2 py-1 transition-colors peer-checked:bg-primary peer-checked:text-primary-content">
+                <span class="icon-[tabler--sun] size-5"></span>
+                <span>Light</span>
+              </span>
+            </label>
+          </li>
+          <li>
+            <label class="w-full cursor-pointer">
+              <input type="radio" name="theme-dropdown" value="dark" data-set-theme="dark" class="peer sr-only" aria-label="Dark" />
+              <span class="flex items-center gap-2 rounded px-2 py-1 transition-colors peer-checked:bg-primary peer-checked:text-primary-content">
+                <span class="icon-[tabler--moon] size-5"></span>
+                <span>Dark</span>
+              </span>
+            </label>
+          </li>
+          <li>
+            <label class="w-full cursor-pointer">
+              <input type="radio" name="theme-dropdown" value="black" data-set-theme="black" class="peer sr-only" aria-label="Black" />
+              <span class="flex items-center gap-2 rounded px-2 py-1 transition-colors peer-checked:bg-primary peer-checked:text-primary-content">
+                <span class="icon-[tabler--circle] size-5"></span>
+                <span>Black</span>
+              </span>
+            </label>
+          </li>
+          <li>
+            <label class="w-full cursor-pointer">
+              <input type="radio" name="theme-dropdown" value="corporate" data-set-theme="corporate" class="peer sr-only" aria-label="Corporate" />
+              <span class="flex items-center gap-2 rounded px-2 py-1 transition-colors peer-checked:bg-primary peer-checked:text-primary-content">
+                <span class="icon-[tabler--building-skyscraper] size-5"></span>
+                <span>Corporate</span>
+              </span>
+            </label>
+          </li>
+          <li>
+            <label class="w-full cursor-pointer">
+              <input type="radio" name="theme-dropdown" value="ghibli" data-set-theme="ghibli" class="peer sr-only" aria-label="Ghibli" />
+              <span class="flex items-center gap-2 rounded px-2 py-1 transition-colors peer-checked:bg-primary peer-checked:text-primary-content">
+                <span class="icon-[tabler--leaf] size-5"></span>
+                <span>Ghibli</span>
+              </span>
+            </label>
+          </li>
+          <li>
+            <label class="w-full cursor-pointer">
+              <input type="radio" name="theme-dropdown" value="gourmet" data-set-theme="gourmet" class="peer sr-only" aria-label="Gourmet" />
+              <span class="flex items-center gap-2 rounded px-2 py-1 transition-colors peer-checked:bg-primary peer-checked:text-primary-content">
+                <span class="icon-[tabler--chef-hat] size-5"></span>
+                <span>Gourmet</span>
+              </span>
+            </label>
+          </li>
+          <li>
+            <label class="w-full cursor-pointer">
+              <input type="radio" name="theme-dropdown" value="luxury" data-set-theme="luxury" class="peer sr-only" aria-label="Luxury" />
+              <span class="flex items-center gap-2 rounded px-2 py-1 transition-colors peer-checked:bg-primary peer-checked:text-primary-content">
+                <span class="icon-[tabler--diamond] size-5"></span>
+                <span>Luxury</span>
+              </span>
+            </label>
+          </li>
+          <li>
+            <label class="w-full cursor-pointer">
+              <input type="radio" name="theme-dropdown" value="mintlify" data-set-theme="mintlify" class="peer sr-only" aria-label="Mintlify" />
+              <span class="flex items-center gap-2 rounded px-2 py-1 transition-colors peer-checked:bg-primary peer-checked:text-primary-content">
+                <span class="icon-[tabler--plant-2] size-5"></span>
+                <span>Mintlify</span>
+              </span>
+            </label>
+          </li>
+          <li>
+            <label class="w-full cursor-pointer">
+              <input type="radio" name="theme-dropdown" value="shadcn" data-set-theme="shadcn" class="peer sr-only" aria-label="Shadcn" />
+              <span class="flex items-center gap-2 rounded px-2 py-1 transition-colors peer-checked:bg-primary peer-checked:text-primary-content">
+                <span class="icon-[tabler--layout-grid] size-5"></span>
+                <span>Shadcn</span>
+              </span>
+            </label>
+          </li>
+          <li>
+            <label class="w-full cursor-pointer">
+              <input type="radio" name="theme-dropdown" value="slack" data-set-theme="slack" class="peer sr-only" aria-label="Slack" />
+              <span class="flex items-center gap-2 rounded px-2 py-1 transition-colors peer-checked:bg-primary peer-checked:text-primary-content">
+                <span class="icon-[tabler--brand-slack] size-5"></span>
+                <span>Slack</span>
+              </span>
+            </label>
+          </li>
+          <li>
+            <label class="w-full cursor-pointer">
+              <input type="radio" name="theme-dropdown" value="soft" data-set-theme="soft" class="peer sr-only" aria-label="Soft" />
+              <span class="flex items-center gap-2 rounded px-2 py-1 transition-colors peer-checked:bg-primary peer-checked:text-primary-content">
+                <span class="icon-[tabler--circle-dashed] size-5"></span>
+                <span>Soft</span>
+              </span>
+            </label>
+          </li>
+          <li>
+            <label class="w-full cursor-pointer">
+              <input type="radio" name="theme-dropdown" value="valorant" data-set-theme="valorant" class="peer sr-only" aria-label="Valorant" />
+              <span class="flex items-center gap-2 rounded px-2 py-1 transition-colors peer-checked:bg-primary peer-checked:text-primary-content">
+                <span class="icon-[tabler--flame] size-5"></span>
+                <span>Valorant</span>
+              </span>
+            </label>
+          </li>
+        </ul>
+      </div>
+      <!-- Theme Controller Dropdown End -->
     </div>
   </div>
 </header>

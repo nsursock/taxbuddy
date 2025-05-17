@@ -1,3 +1,19 @@
+/* Google Fonts Imports for Themes */
+/* Corporate : 'Public Sans' */
+@import url('https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap');
+/* Ghibli : 'Amaranth' */
+@import url('https://fonts.googleapis.com/css2?family=Amaranth:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+/* Gourmet : 'Rubik' */
+@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap');
+/* Luxury : 'Archivo' */
+@import url('https://fonts.googleapis.com/css?family=Archivo:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap');
+/* Slack : 'Lato' */
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+/* Soft : 'Montserrat' */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap');
+/* Valorant : 'Work Sans' */
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+
 @import "tailwindcss";
 @import "flyonui/variants.css";
 @import "flyonui/src/vendor/notyf.css";
@@ -9,6 +25,42 @@
 @source "./node_modules/flyonui/dist/index.js"; /* Require only if you want to use FlyonUI JS component */
 @source "./node_modules/flyonui/dist/accordion.js"; 
 
-@plugin "flyonui" {
-  themes: valorant --default;
+@plugin "flyonui"{
+  themes: valorant --default, light, dark, gourmet, corporate, luxury, soft, black, ghibli, mintlify, shadcn, slack, acid, caramellatte;
+}
+
+
+@plugin "flyonui/theme" {
+  name: "corporate";
+  fontFamily: "Public Sans, system-ui, sans-serif";
+}
+
+@plugin "flyonui/theme" {
+  name: "ghibli";
+  fontFamily: "Amaranth, system-ui, sans-serif";
+}
+
+@plugin "flyonui/theme" {
+  name: "gourmet";
+  fontFamily: "Rubik, system-ui, sans-serif";
+}
+
+@plugin "flyonui/theme" {
+  name: "luxury";
+  fontFamily: "Archivo, system-ui, sans-serif";
+}
+
+@plugin "flyonui/theme" {
+  name: "slack";
+  fontFamily: "Lato, system-ui, sans-serif";
+}
+
+@plugin "flyonui/theme" {
+  name: "soft";
+  fontFamily: "Montserrat, system-ui, sans-serif";
+}
+
+@plugin "flyonui/theme" {
+  name: "valorant";
+  fontFamily: "Work Sans, system-ui, sans-serif";
 }

@@ -6,6 +6,7 @@
     <title>{{ site.title }} - {{ title or meta.title }}</title>
     {% include "meta.njk" %}
     <link rel="stylesheet" href="{{ '/node_modules/notyf/notyf.min.css' | url }}" />
+    <link rel="stylesheet" href="{{ '/node_modules/apexcharts/dist/apexcharts.css' | url }}" />
   </head>
 
   <body>
@@ -28,6 +29,9 @@
     {% include "chain-modal.njk" %}
 
     <script type="module" src="{{ '/node_modules/flyonui/flyonui.js' | url }}"></script>
+    <script src="{{ '/node_modules/lodash/lodash.js' | url }}"></script>
+    <script src="{{ '/node_modules/apexcharts/dist/apexcharts.js' | url }}"></script>
+    <script src="{{ '/node_modules/flyonui/dist/helper-apexcharts.js' | url }}"></script>
     <script type="module" src="{{ '/assets/js/index.js' | url }}"></script>
     {# <script src="{{ '/node_modules/flyonui/accordion.js' | url }}"></script> #}
   </body>

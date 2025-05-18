@@ -162,10 +162,10 @@ document.addEventListener('alpine:init', () => {
   });
 
   Alpine.store('notyf', {
-    success(msg) { getNotyf().success(msg); },
-    error(msg) { getNotyf().error(msg); },
-    info(msg) { getNotyf().open({ type: 'info', message: msg }); },
-    warning(msg) { getNotyf().open({ type: 'warning', message: msg }); }
+    success(msg, opts = {}) { return getNotyf().success(msg, opts); },
+    error(msg, opts = {}) { return getNotyf().error(msg, opts); },
+    info(msg, opts = {}) { return getNotyf().open({ type: 'info', message: msg, ...opts }); },
+    warning(msg, opts = {}) { return getNotyf().open({ type: 'warning', message: msg, ...opts }); }
   });
 
   // Expose ownWallets globally for Alpine components
@@ -374,9 +374,10 @@ window.transactionsTable = (address, chain, year = '2024') => ({
     this.transactions = [];
     this.allTransactions = [];
 
-    // Show loading notification
+    // Show loading notification (persistent)
+    let loadingToast = null;
     if (this.$store && this.$store.notyf) {
-      this.$store.notyf.info('Loading transactions...');
+      loadingToast = this.$store.notyf.info('Loading transactions...', { duration: 0 });
     }
 
     // EVM chains (Ethereum, Arbitrum, etc.)
@@ -516,7 +517,10 @@ window.transactionsTable = (address, chain, year = '2024') => ({
 
     this.loading = false;
 
-    // Show loaded notification
+    // Dismiss loading toast and show loaded notification
+    if (loadingToast) {
+      getNotyf().dismiss(loadingToast);
+    }
     if (this.$store && this.$store.notyf) {
       this.$store.notyf.success('Transactions loaded!');
     }

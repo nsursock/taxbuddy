@@ -34,9 +34,11 @@
   },
   "dependencies": {
     "alpinejs": "^3.14.9",
+    "apexcharts": "^4.7.0",
     "axios": "^1.9.0",
     "flyonui": "^2.1.0",
     "glob": "^11.0.2",
+    "lodash": "^4.17.21",
     "notyf": "^3.10.0",
     "theme-change": "^2.5.0"
   }

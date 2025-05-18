@@ -54,7 +54,9 @@ eleventyNavigation:
              "
              x-effect="fetchTransactions()"
              x-ref="transactionsTable">
-          <h1 class="text-3xl font-bold mb-4">Transactions</h1>
+          <h1 class="text-3xl font-bold mb-4">
+            Transactions <template x-if="!loading"><span x-text="'(' + (filteredTransactions ? filteredTransactions.length : 0) + ')'" class="font-normal text-base-content/60"></span></template>
+          </h1>
           <div class="flex flex-col sm:flex-row gap-4 items-center mb-4">
             <label class="label-text" for="year-select">Year:</label>
             <div class="max-w-sm">

@@ -17,60 +17,7 @@ Extracted from dashboard.njk for modularity.
   <h1 class="text-3xl font-bold mb-4">
     Transactions <template x-if="!loading"><span x-text="'(' + (filteredTransactions ? filteredTransactions.length : 0) + ')'" class="font-normal text-base-content/60"></span></template>
   </h1>
-  <div class="flex flex-col sm:flex-row gap-4 items-center mb-4">
-    <label class="label-text" for="year-select">Year:</label>
-    <div class="max-w-sm">
-      <select
-        id="year-select"
-        x-model="year"
-        x-init="window.HSSelect && new window.HSSelect($el)"
-        @change="fetchTransactions()"
-        data-select='{
-          "placeholder": "<span class=\"inline-flex items-center\"><span class=\"icon-[tabler--filter] shrink-0 size-4 me-2\"></span> Filter</span>",
-          "toggleTag": "<button type=\"button\" aria-expanded=\"false\"></button>",
-          "toggleClasses": "advance-select-toggle select-disabled:pointer-events-none select-disabled:opacity-40",
-          "dropdownClasses": "advance-select-menu",
-          "optionClasses": "advance-select-option selected:select-active",
-          "optionTemplate": "<div class=\"flex justify-between items-center w-full\"><span data-title></span><span class=\"icon-[tabler--check] shrink-0 size-4 text-primary hidden selected:block \" ></span></div>",
-          "extraMarkup": "<span class=\"icon-[tabler--caret-up-down] shrink-0 size-4 text-base-content absolute top-1/2 end-3 -translate-y-1/2 \" ></span>"
-        }'
-        class="hidden"
-      >
-        <option value="2025">2025</option>
-        <option value="2024" selected>2024</option>
-        <option value="2023">2023</option>
-        <option value="2022">2022</option>
-        <option value="2021">2021</option>
-        <option value="2020">2020</option>
-      </select>
-    </div>
-    <!-- Currency Advanced Select -->
-    <label class="label-text" for="currency-select">Currency:</label>
-    <div class="max-w-xs">
-      <select
-        id="currency-select"
-        x-model="currency"
-        x-init="window.HSSelect && new window.HSSelect($el)"
-        data-select='{
-          "placeholder": "<span class=\"inline-flex items-center\"><span class=\"icon-[tabler--currency-dollar] shrink-0 size-4 me-2\"></span> Currency</span>",
-          "toggleTag": "<button type=\"button\" aria-expanded=\"false\"></button>",
-          "toggleClasses": "advance-select-toggle select-disabled:pointer-events-none select-disabled:opacity-40",
-          "dropdownClasses": "advance-select-menu",
-          "optionClasses": "advance-select-option selected:select-active",
-          "optionTemplate": "<div class=\"flex justify-between items-center w-full\"><span data-title></span><span class=\"icon-[tabler--check] shrink-0 size-4 text-primary hidden selected:block \" ></span></div>",
-          "extraMarkup": "<span class=\"icon-[tabler--caret-up-down] shrink-0 size-4 text-base-content absolute top-1/2 end-3 -translate-y-1/2 \" ></span>"
-        }'
-        class="hidden"
-      >
-        <option value="USD" selected>USD</option>
-        <option value="EUR">EUR</option>
-      </select>
-    </div>
-  </div>
-  <div class="flex items-center gap-2 mb-4">
-    <input type="checkbox" class="switch switch-primary" id="hideSmallTx" x-model="hideSmallTx">
-    <label class="label-text text-base" for="hideSmallTx">Hide small transactions</label>
-  </div>
+  <!-- Filtering UI removed: now shared at dashboard level -->
   <p>Review all your imported transactions here.</p>
   <div class="w-full overflow-x-auto">
     <table class="table border-b-2 border-accent/20">

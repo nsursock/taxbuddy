@@ -12,7 +12,7 @@
     "copy:flyonui": "cp node_modules/flyonui/flyonui.js src/assets/js/",
     "copy:notyf": "cp node_modules/notyf/notyf.min.css src/assets/css/",
     "build": "npx @11ty/eleventy",
-    "clean": "del-cli _site"
+    "clean": "del-cli _site dist"
   },
   "keywords": [],
   "author": "",

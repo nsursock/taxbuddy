@@ -25,11 +25,66 @@ eleventyNavigation:
   </div>
 
   <!-- Main Content -->
-  <div class="flex-1 p-8">
+  <div class="flex-1 px-8 pb-8">
     <!-- Drawer toggle for mobile -->
     <button type="button" class="btn btn-primary mb-4 md:hidden" data-overlay="#dashboard-drawer">
       <span class="icon-[tabler--menu-2]"></span> Menu
     </button>
+    <!-- Shared Filtering UI in a card -->
+    <div class="box rounded-box shadow bg-base-200 p-6 mb-6 w-full">
+      <div class="flex flex-col sm:flex-row gap-4 items-center" x-data x-init="setTimeout(() => { window.HSSelect && window.HSSelect.initAll && window.HSSelect.initAll(); }, 0)">
+        <div class="w-full sm:w-1/2 flex flex-col sm:flex-row gap-4 items-center">
+          <label class="label-text" for="year-select">Year:</label>
+          <div class="max-w-sm">
+            <select
+              id="year-select"
+              x-model="$store.dashboardFilters.year"
+              x-cloak
+              data-select='{
+                "placeholder": "<span class=\"inline-flex items-center\"><span class=\"icon-[tabler--filter] shrink-0 size-4 me-2\"></span> Filter</span>",
+                "toggleTag": "<button type=\"button\" aria-expanded=\"false\"></button>",
+                "toggleClasses": "advance-select-toggle select-disabled:pointer-events-none select-disabled:opacity-40",
+                "dropdownClasses": "advance-select-menu",
+                "optionClasses": "advance-select-option selected:select-active",
+                "optionTemplate": "<div class=\"flex justify-between items-center w-full\"><span data-title></span><span class=\"icon-[tabler--check] shrink-0 size-4 text-primary hidden selected:block \" ></span></div>",
+                "extraMarkup": "<span class=\"icon-[tabler--caret-up-down] shrink-0 size-4 text-base-content absolute top-1/2 end-3 -translate-y-1/2 \" ></span>"
+              }'
+            >
+              <option value="2025">2025</option>
+              <option value="2024" selected>2024</option>
+              <option value="2023">2023</option>
+              <option value="2022">2022</option>
+              <option value="2021">2021</option>
+              <option value="2020">2020</option>
+            </select>
+          </div>
+          <label class="label-text" for="currency-select">Currency:</label>
+          <div class="max-w-xs">
+            <select
+              id="currency-select"
+              x-model="$store.dashboardFilters.currency"
+              x-cloak
+              data-select='{
+                "placeholder": "<span class=\"inline-flex items-center\"><span class=\"icon-[tabler--currency-dollar] shrink-0 size-4 me-2\"></span> Currency</span>",
+                "toggleTag": "<button type=\"button\" aria-expanded=\"false\"></button>",
+                "toggleClasses": "advance-select-toggle select-disabled:pointer-events-none select-disabled:opacity-40",
+                "dropdownClasses": "advance-select-menu",
+                "optionClasses": "advance-select-option selected:select-active",
+                "optionTemplate": "<div class=\"flex justify-between items-center w-full\"><span data-title></span><span class=\"icon-[tabler--check] shrink-0 size-4 text-primary hidden selected:block \" ></span></div>",
+                "extraMarkup": "<span class=\"icon-[tabler--caret-up-down] shrink-0 size-4 text-base-content absolute top-1/2 end-3 -translate-y-1/2 \" ></span>"
+              }'
+            >
+              <option value="USD" selected>USD</option>
+              <option value="EUR">EUR</option>
+            </select>
+          </div>
+        </div>
+        <div class="w-full sm:w-1/2 flex justify-center sm:justify-end items-center">
+          <input type="checkbox" class="switch switch-primary" id="hideSmallTx" x-model="$store.dashboardFilters.hideSmallTx">
+          <label class="label-text text-base ml-2" for="hideSmallTx">Hide small transactions</label>
+        </div>
+      </div>
+    </div>
     <div id="dashboard-content">
       <template x-if="section === 'overview'">
         {% include 'dashboard/overview.njk' %}

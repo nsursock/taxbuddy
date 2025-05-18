@@ -4,20 +4,16 @@
  *
  * @module transactionsTable
  */
-import { fetchEvmTransactions, fetchSolanaTransactions } from './api.js';
-import { filterAndPaginateTransactions, invested, cashedOut, localSymbol } from './helpers.js';
+import { getFilteredPaginatedTransactions, invested, cashedOut, localSymbol } from './controller.js';
 
 /**
  * Register the transactionsTable Alpine component globally.
  */
 export function registerTransactionsTable() {
-  window.transactionsTable = (address, chain, year = '2024') => ({
+  window.transactionsTable = (address, chain) => ({
     address,
     chain,
-    year,
-    currency: 'USD',
-    hideSmallTx: true,
-    lastFetch: { address: null, chain: null, year: null },
+    lastFetch: { address: null, chain: null },
     page: 1,
     pageSize: 10,
     totalPages: 1,
@@ -28,49 +24,19 @@ export function registerTransactionsTable() {
     priceCache: {},
     fxCache: {},
 
-    /**
-     * Fetch and update transactions from blockchain APIs.
-     */
-    async fetchTransactions() {
-      if (
-        this.lastFetch.address === this.address &&
-        this.lastFetch.chain === this.chain &&
-        this.lastFetch.year === this.year
-      ) {
-        return;
-      }
-      this.lastFetch = {
-        address: this.address,
-        chain: this.chain,
-        year: this.year
-      };
-      if (!this.address) return;
-      this.loading = true;
-      this.transactions = [];
-      this.allTransactions = [];
+    async init() {
+      this.$watch('$store.dashboardFilters.year', () => this.onUserFilterChange());
+      this.$watch('$store.dashboardFilters.currency', () => this.onUserFilterChange());
+      this.$watch('$store.dashboardFilters.hideSmallTx', () => this.onUserFilterChange());
+      await this.onUserFilterChange();
+    },
+
+    async onUserFilterChange() {
       let loadingToast = null;
       if (this.$store && this.$store.notyf) {
         loadingToast = this.$store.notyf.info('Loading transactions...', { duration: 0 });
       }
-      // EVM chains
-      if (!this.chain || this.chain.toLowerCase() === 'ethereum') {
-        const explorers = [
-          { name: 'Ethereum', url: 'https://api.etherscan.io/api', apiKey: import.meta.env.VITE_ETHERSCAN_API_KEY, usdc: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48', usdt: '0xdac17f958d2ee523a2206206994597c13d831ec7', decimals: { USDC: 6, USDT: 6 } },
-          { name: 'Arbitrum', url: 'https://api.arbiscan.io/api', apiKey: import.meta.env.VITE_ARBISCAN_API_KEY, usdc: '0xaf88d065e77c8cC2239327C5EDb3A432268e5831', usdt: '0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9', decimals: { USDC: 6, USDT: 6 } },
-        ];
-        this.allTransactions = await fetchEvmTransactions(this.address, this.year, explorers);
-      }
-      // Solana
-      if (this.chain && this.chain.toLowerCase() === 'solana') {
-        try {
-          const heliusApiKey = import.meta.env.VITE_HELIUS_API_KEY;
-          this.allTransactions = await fetchSolanaTransactions(this.address, this.year, heliusApiKey);
-        } catch (e) {
-          // Error already logged in API
-        }
-      }
-      await this.updateTransactions();
-      this.loading = false;
+      await this.fetchTransactions();
       if (loadingToast && this.$store && this.$store.notyf && this.$store.notyf.dismiss) {
         this.$store.notyf.dismiss(loadingToast);
       }
@@ -79,31 +45,32 @@ export function registerTransactionsTable() {
       }
     },
 
-    /**
-     * Filter and paginate transactions, calculate local value, and update state.
-     */
-    async updateTransactions() {
-      const { filtered, totalPages, paginated } = await filterAndPaginateTransactions(
-        this.allTransactions,
-        {
-          year: this.year,
-          chain: this.chain,
-          currency: this.currency,
-          hideSmallTx: this.hideSmallTx,
-          priceCache: this.priceCache,
-          fxCache: this.fxCache,
-          page: this.page,
-          pageSize: this.pageSize,
-        }
-      );
+    async fetchTransactions() {
+      this.loading = true;
+      const { filtered, totalPages, paginated } = await getFilteredPaginatedTransactions({
+        address: this.address,
+        chain: this.chain,
+        year: this.$store.dashboardFilters.year,
+        currency: this.$store.dashboardFilters.currency,
+        hideSmallTx: this.$store.dashboardFilters.hideSmallTx,
+        page: this.page,
+        pageSize: this.pageSize,
+        priceCache: this.priceCache,
+        fxCache: this.fxCache,
+      });
       this.filteredTransactions = filtered;
       this.totalPages = totalPages;
       this.transactions = paginated;
+      this.loading = false;
+    },
+
+    async updateTransactions() {
+      await this.fetchTransactions();
     },
 
     // Watchers for page, year, and allTransactions
     get watchPage() { this.updateTransactions(); return this.page; },
-    get watchYear() { this.updateTransactions(); return this.year; },
+    get watchYear() { this.updateTransactions(); return this.$store.dashboardFilters.year; },
     get watchAllTransactions() { this.updateTransactions(); return this.allTransactions; },
 
     /**
@@ -141,7 +108,7 @@ export function registerTransactionsTable() {
     },
 
     /**
-     * Calculate total invested (incoming from external wallets).
+     * Calculate total invested (incoming from external wallets) using Controller.
      * @returns {number}
      */
     invested() {
@@ -149,7 +116,7 @@ export function registerTransactionsTable() {
     },
 
     /**
-     * Calculate total cashed out (outgoing to external wallets).
+     * Calculate total cashed out (outgoing to external wallets) using Controller.
      * @returns {number}
      */
     cashedOut() {
@@ -157,7 +124,7 @@ export function registerTransactionsTable() {
     },
 
     /**
-     * Get the local currency symbol for display.
+     * Get the local currency symbol for display using Controller.
      * @returns {string}
      */
     localSymbol() {

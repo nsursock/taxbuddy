@@ -15,6 +15,7 @@ import { registerTransactionsTable } from './transactions/table.js';
 import _ from 'lodash';
 import ApexCharts from 'apexcharts';
 import 'flyonui/dist/helper-apexcharts.js';
+import overviewStore from './charts.js';
 
 themeChange();
 window.Alpine = Alpine;
@@ -27,6 +28,13 @@ document.addEventListener('alpine:init', () => {
   registerNotyfStore(Alpine);
   registerWalletStore(Alpine, Alpine.store('notyf'));
   registerTransactionsTable();
+  Alpine.data('overviewStore', overviewStore);
+  // Register global dashboardFilters store
+  Alpine.store('dashboardFilters', {
+    year: '2024',
+    currency: 'USD',
+    hideSmallTx: true,
+  });
 });
 
 Alpine.start();

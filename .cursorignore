@@ -1,0 +1,8 @@
+# Ignore build output
+dist/
+_site/
+build/
+
+# Ignore dependencies
+node_modules/
+vendor/

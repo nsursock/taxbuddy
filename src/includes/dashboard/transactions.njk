@@ -1,0 +1,197 @@
+{#
+Dashboard Transactions Section
+Extracted from dashboard.njk for modularity.
+#}
+<div class="w-full mt-8"
+     x-data="transactionsTable($store.wallet.address, $store.wallet.chain)"
+     x-init="
+       year = '2024';
+       currency = 'USD';
+       $watch('page', () => updateTransactions());
+       $watch('year', () => { page = 1; updateTransactions(); });
+       $watch('hideSmallTx', () => { page = 1; updateTransactions(); });
+       $watch('currency', () => { updateTransactions(); });
+     "
+     x-effect="fetchTransactions()"
+     x-ref="transactionsTable">
+  <h1 class="text-3xl font-bold mb-4">
+    Transactions <template x-if="!loading"><span x-text="'(' + (filteredTransactions ? filteredTransactions.length : 0) + ')'" class="font-normal text-base-content/60"></span></template>
+  </h1>
+  <div class="flex flex-col sm:flex-row gap-4 items-center mb-4">
+    <label class="label-text" for="year-select">Year:</label>
+    <div class="max-w-sm">
+      <select
+        id="year-select"
+        x-model="year"
+        x-init="window.HSSelect && new window.HSSelect($el)"
+        @change="fetchTransactions()"
+        data-select='{
+          "placeholder": "<span class=\"inline-flex items-center\"><span class=\"icon-[tabler--filter] shrink-0 size-4 me-2\"></span> Filter</span>",
+          "toggleTag": "<button type=\"button\" aria-expanded=\"false\"></button>",
+          "toggleClasses": "advance-select-toggle select-disabled:pointer-events-none select-disabled:opacity-40",
+          "dropdownClasses": "advance-select-menu",
+          "optionClasses": "advance-select-option selected:select-active",
+          "optionTemplate": "<div class=\"flex justify-between items-center w-full\"><span data-title></span><span class=\"icon-[tabler--check] shrink-0 size-4 text-primary hidden selected:block \" ></span></div>",
+          "extraMarkup": "<span class=\"icon-[tabler--caret-up-down] shrink-0 size-4 text-base-content absolute top-1/2 end-3 -translate-y-1/2 \" ></span>"
+        }'
+        class="hidden"
+      >
+        <option value="2025">2025</option>
+        <option value="2024" selected>2024</option>
+        <option value="2023">2023</option>
+        <option value="2022">2022</option>
+        <option value="2021">2021</option>
+        <option value="2020">2020</option>
+      </select>
+    </div>
+    <!-- Currency Advanced Select -->
+    <label class="label-text" for="currency-select">Currency:</label>
+    <div class="max-w-xs">
+      <select
+        id="currency-select"
+        x-model="currency"
+        x-init="window.HSSelect && new window.HSSelect($el)"
+        data-select='{
+          "placeholder": "<span class=\"inline-flex items-center\"><span class=\"icon-[tabler--currency-dollar] shrink-0 size-4 me-2\"></span> Currency</span>",
+          "toggleTag": "<button type=\"button\" aria-expanded=\"false\"></button>",
+          "toggleClasses": "advance-select-toggle select-disabled:pointer-events-none select-disabled:opacity-40",
+          "dropdownClasses": "advance-select-menu",
+          "optionClasses": "advance-select-option selected:select-active",
+          "optionTemplate": "<div class=\"flex justify-between items-center w-full\"><span data-title></span><span class=\"icon-[tabler--check] shrink-0 size-4 text-primary hidden selected:block \" ></span></div>",
+          "extraMarkup": "<span class=\"icon-[tabler--caret-up-down] shrink-0 size-4 text-base-content absolute top-1/2 end-3 -translate-y-1/2 \" ></span>"
+        }'
+        class="hidden"
+      >
+        <option value="USD" selected>USD</option>
+        <option value="EUR">EUR</option>
+      </select>
+    </div>
+  </div>
+  <div class="flex items-center gap-2 mb-4">
+    <input type="checkbox" class="switch switch-primary" id="hideSmallTx" x-model="hideSmallTx">
+    <label class="label-text text-base" for="hideSmallTx">Hide small transactions</label>
+  </div>
+  <p>Review all your imported transactions here.</p>
+  <div class="w-full overflow-x-auto">
+    <table class="table border-b-2 border-accent/20">
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Date/Time</th>
+          <th>Out</th>
+          <th>In</th>
+          <th>Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        <template x-for="(tx, idx) in transactions" :key="tx.hash + '-' + idx">
+          <tr class="hover:bg-base-200/60 transition-colors">
+            <td>
+              <template x-if="tx.type === 'in'">
+                <span class="badge badge-soft badge-success"><span class="icon-[tabler--arrow-down-left]"></span> In</span>
+              </template>
+              <template x-if="tx.type === 'out'">
+                <span class="badge badge-soft badge-error"><span class="icon-[tabler--arrow-up-right]"></span> Out</span>
+              </template>
+            </td>
+            <td>
+              <template x-if="tx.datetime">
+                <div class="whitespace-nowrap">
+                  <span x-text="new Date(tx.datetime).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: '2-digit' })"></span><br>
+                  <span class="text-xs text-base-content/60" x-text="new Date(tx.datetime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })"></span>
+                </div>
+              </template>
+              <template x-if="!tx.datetime">
+                <span>—</span>
+              </template>
+            </td>
+            <td>
+              <template x-if="tx.out">
+                <div>
+                  <span class="font-semibold text-error" x-text="tx.out.amount"></span>
+                  <div class="text-xs text-base-content/60" x-text="tx.out.wallet"></div>
+                </div>
+              </template>
+              <template x-if="!tx.out">
+                <div class="text-base-content/40">—</div>
+              </template>
+            </td>
+            <td>
+              <template x-if="tx.in">
+                <div>
+                  <span class="font-semibold text-success" x-text="tx.in.amount"></span>
+                  <div class="text-xs text-base-content/60" x-text="tx.in.wallet"></div>
+                </div>
+              </template>
+              <template x-if="!tx.in">
+                <div class="text-base-content/40">—</div>
+              </template>
+            </td>
+            <td><span class="font-semibold" x-text="tx.local"></span></td>
+          </tr>
+        </template>
+      </tbody>
+    </table>
+  </div>
+  <!-- Move pagination below the table -->
+  <nav class="flex items-center gap-x-1 justify-center mt-6">
+    <button
+      type="button"
+      class="btn btn-soft"
+      :class="{ 'btn-disabled': page === 1 }"
+      @click="if(page > 1) { page--; }"
+    >
+      Previous
+    </button>
+    <div class="flex items-center gap-x-1">
+      <template x-for="(p, idx) in pagesToShow()" :key="p + '-' + idx + '-' + page">
+        <button
+          type="button"
+          class="btn btn-soft btn-square aria-[current='page']:text-bg-primary"
+          :class="p === '...' ? 'pointer-events-none' : ''"
+          :aria-current="page === p && p !== '...' ? 'page' : false"
+          @click="if(p !== '...' && page !== p) { page = p; }"
+          x-text="p === '...' ? '...' : p"
+          :disabled="p === '...'"
+          :tabindex="p === '...' ? -1 : 0"
+        ></button>
+      </template>
+    </div>
+    <button
+      type="button"
+      class="btn btn-soft"
+      :class="{ 'btn-disabled': page === totalPages }"
+      @click="if(page < totalPages) { page++; }"
+    >
+      Next
+    </button>
+  </nav>
+  <!-- Totals Stat -->
+  <div class="flex justify-center">
+    <div class="stats stats-border shadow-none mt-6 bg-base-200/60">
+      <div class="stat">
+        <div class="stat-figure text-error size-8">
+          <span class="icon-[tabler--login] size-8"></span>
+        </div>
+        <div class="stat-title">Invested (from external)</div>
+        <div class="stat-value text-primary" x-text="localSymbol() + invested().toLocaleString(undefined, {maximumFractionDigits: 2})"></div>
+        <div class="stat-desc">Sum of all incoming from non-wallet addresses<br>(may include bridges/exchanges/OTC)</div>
+      </div>
+      <div class="stat">
+        <div class="stat-figure text-success size-8">
+          <span class="icon-[tabler--logout] size-8"></span>
+        </div>
+        <div class="stat-title">Cashed Out (to external)</div>
+        <div class="stat-value text-secondary" x-text="localSymbol() + cashedOut().toLocaleString(undefined, {maximumFractionDigits: 2})"></div>
+        <div class="stat-desc">Sum of all outgoing to non-wallet addresses<br>(may include bridges/exchanges/OTC)</div>
+      </div>
+    </div>
+  </div>
+  <!-- Fallback warning if no ownWallets are set -->
+  <div class="flex justify-center mt-2" x-show="$store.ownWallets.length === 0">
+    <div class="alert alert-warning bg-warning/20 border-warning text-warning-content max-w-xl">
+      <span class="icon-[tabler--alert-triangle] mr-2"></span>
+      Stats are using a fallback: all addresses are treated as external for demo purposes. Set your own wallets in the environment for accurate stats.
+    </div>
+  </div>
+</div> 

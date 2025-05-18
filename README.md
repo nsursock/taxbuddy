@@ -138,3 +138,52 @@ Pull requests and issues are welcome! Please open an issue to discuss your ideas
 ---
 
 **Built with ❤️ for the French crypto community.**
+
+# TaxBuddy Frontend Code Structure
+
+## Modular JavaScript Architecture
+
+The frontend JavaScript is organized for clarity, modularity, and maintainability. All major logic is split into separate modules under `src/assets/js/`:
+
+### Main Modules
+
+- **index.js**: Entrypoint. Registers Alpine stores/components and handles global listeners.
+- **walletStore.js**: Alpine store for wallet connection logic (OKX, Ethereum, Solana). Handles connect, disconnect, chain selection, and state.
+- **notyfStore.js**: Alpine store for notifications using Notyf. Provides success, error, info, and warning methods.
+- **transactionsTable.js**: Alpine component for fetching, filtering, and displaying blockchain transactions. Handles pagination, price lookups, and stats.
+- **utils.js**: Utility functions (e.g., parseAmount) used by other modules.
+
+### How to Extend
+
+- **Add a new Alpine store**: Create a new file (e.g., `myStore.js`), export a `registerMyStore(Alpine)` function, and call it in `index.js` inside the `alpine:init` event.
+- **Add a new Alpine component**: Create a new file (e.g., `myComponent.js`), export a `registerMyComponent()` function, and call it in `index.js`.
+- **Add utilities**: Place shared helpers in `utils.js` and import where needed.
+
+### Example: Adding a Store
+```js
+// src/assets/js/myStore.js
+export function registerMyStore(Alpine) {
+  Alpine.store('myStore', { ... });
+}
+```
+And in `index.js`:
+```js
+import { registerMyStore } from './myStore.js';
+document.addEventListener('alpine:init', () => {
+  registerMyStore(Alpine);
+});
+```
+
+### Comments & Documentation
+- All modules use JSDoc for function and parameter documentation.
+- Inline comments explain tricky logic, API calls, and Alpine usage.
+
+### Where to Find Logic
+- **Wallet connection**: `walletStore.js`
+- **Notifications**: `notyfStore.js`
+- **Transactions table**: `transactionsTable.js`
+- **Utilities**: `utils.js`
+
+---
+
+For further details, see the top of each JS file and inline comments.

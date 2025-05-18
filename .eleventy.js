@@ -95,7 +95,7 @@ export default function (eleventyConfig) {
   return {
     dir: {
       input: "src",
-      output: "_site",
+      output: "dist",
       includes: "includes", // this path is releative to input-path (src/)
       layouts: "layouts", // this path is releative to input-path (src/)
       data: "data", // this path is releative to input-path (src/)

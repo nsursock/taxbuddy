@@ -2,7 +2,102 @@
 Dashboard Accounts Section
 Extracted from dashboard.njk for modularity.
 #}
-<div>
-  <h1 class="text-3xl font-bold mb-4">Accounts</h1>
-  <p>View and manage your connected wallets and exchanges.</p>
+<div x-data="walletManager">
+  <div>
+    <h1 class="text-3xl font-bold mb-4">Accounts</h1>
+    <p class="text-gray-600">Your connected and remembered wallet addresses.</p>
+  </div>
+
+  <!-- Current Wallet -->
+  <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200 mb-6">
+    <div class="flex items-center justify-between">
+      <div>
+        <h2 class="text-xl font-semibold mb-2">Current Wallet</h2>
+        <template x-if="$store.wallet.address">
+          <div class="space-y-2">
+            <p class="text-sm text-gray-600">Connected Address:</p>
+            <p class="font-mono text-sm break-all" x-text="$store.wallet.address"></p>
+            <p class="text-sm text-gray-600">Chain: <span x-text="$store.wallet.chain"></span></p>
+          </div>
+        </template>
+        <template x-if="!$store.wallet.address">
+          <p class="text-gray-600">No wallet connected</p>
+        </template>
+      </div>
+      <template x-if="$store.wallet.address">
+        <button 
+          type="button"
+          class="btn btn-primary"
+          data-hs-overlay="#remember-wallet-modal">
+          Remember This Wallet
+        </button>
+      </template>
+    </div>
+  </div>
+
+  <!-- Remembered Wallets -->
+  <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+    <h2 class="text-xl font-semibold mb-4">Remembered Wallets</h2>
+    <template x-if="rememberedWallets.length === 0">
+      <p class="text-gray-600">No wallets remembered yet</p>
+    </template>
+    <div class="space-y-4">
+      <template x-for="(wallet, index) in rememberedWallets" :key="index">
+        <div class="flex items-center justify-between p-4 bg-gray-50 rounded-md">
+          <div class="space-y-1">
+            <template x-if="wallet.evm">
+              <div>
+                <p class="text-sm text-gray-600">EVM Address:</p>
+                <p class="font-mono text-sm break-all" x-text="wallet.evm"></p>
+              </div>
+            </template>
+            <template x-if="wallet.sol">
+              <div>
+                <p class="text-sm text-gray-600">Solana Address:</p>
+                <p class="font-mono text-sm break-all" x-text="wallet.sol"></p>
+              </div>
+            </template>
+          </div>
+          <button 
+            @click="removeWallet(index)"
+            class="text-red-600 hover:text-red-800">
+            Remove
+          </button>
+        </div>
+      </template>
+    </div>
+  </div>
+
+  <!-- Remember Wallet Modal -->
+  <div id="remember-wallet-modal" class="overlay modal overlay-open:opacity-100 overlay-open:duration-300 hidden" role="dialog" tabindex="-1">
+    <div class="modal-dialog overlay-open:opacity-100 overlay-open:duration-300">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title">Remember Current Wallet</h3>
+          <button type="button" class="btn btn-text btn-circle btn-sm absolute end-3 top-3" aria-label="Close" data-hs-overlay="#remember-wallet-modal">
+            <span class="icon-[tabler--x] size-4"></span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p class="text-gray-600">
+            This will remember your current wallet address for future use. You can remove it later from the remembered wallets list.
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button 
+            type="button"
+            class="btn btn-soft btn-secondary"
+            data-hs-overlay="#remember-wallet-modal">
+            Cancel
+          </button>
+          <button 
+            type="button"
+            class="btn btn-primary"
+            @click="rememberCurrentWallet()">
+            Remember
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div> 

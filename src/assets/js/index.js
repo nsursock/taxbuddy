@@ -35,6 +35,39 @@ document.addEventListener('alpine:init', () => {
     currency: 'USD',
     hideSmallTx: true,
   });
+  Alpine.data('walletManager', () => ({
+    rememberedWallets: JSON.parse(localStorage.getItem('rememberedWallets') || '[]'),
+    
+    async rememberCurrentWallet() {
+      const wallet = {
+        evm: this.$store.wallet.chain === 'ethereum' ? this.$store.wallet.address : null,
+        sol: this.$store.wallet.chain === 'solana' ? this.$store.wallet.address : null,
+        timestamp: Date.now()
+      };
+      
+      if (wallet.evm || wallet.sol) {
+        this.rememberedWallets.push(wallet);
+        localStorage.setItem('rememberedWallets', JSON.stringify(this.rememberedWallets));
+        if (window.HSOverlay) {
+          HSOverlay.close('#remember-wallet-modal');
+        }
+        this.$store.notyf.success('Wallet addresses remembered successfully');
+      }
+    },
+
+    removeWallet(index) {
+      this.rememberedWallets.splice(index, 1);
+      localStorage.setItem('rememberedWallets', JSON.stringify(this.rememberedWallets));
+      this.$store.notyf.success('Wallet removed from remembered list');
+    },
+
+    init() {
+      // Initialize FlyonUI overlay
+      if (window.HSOverlay) {
+        const modal = new HSOverlay(document.querySelector('#remember-wallet-modal'));
+      }
+    }
+  }));
 });
 
 Alpine.start();

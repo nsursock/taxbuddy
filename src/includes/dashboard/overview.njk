@@ -16,34 +16,31 @@ FlyonUI stat cards + ApexCharts area chart, chart initialized via Alpine.js
         <span class="icon-[tabler--wallet] text-2xl text-primary"></span>
       </div>
       <div>
-        <div class="text-2xl font-bold" x-text="stats ? '$' + stats.portfolio.toLocaleString() : '-'">$24,500.00</div>
+        <div class="text-2xl font-bold" x-text="stats ? currencySymbol + stats.portfolio.toLocaleString() : '-'">$24,500.00</div>
         <div class="text-base-content/70 text-sm">Portfolio Value</div>
-        <div class="flex items-center gap-2 mt-1">
-          <span class="badge badge-success badge-xs" x-text="stats ? '+' + stats.change + '%' : ''">+5.2%</span>
-          <span class="text-xs text-base-content/50">this month</span>
-        </div>
+        <div class="text-xs text-base-content/50 mt-1" x-text="stats && stats.portfolioDate ? 'as of ' + new Date(stats.portfolioDate).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }) : ''">as of Dec 31, 2023</div>
       </div>
     </div>
-    <!-- 24h Gains/Losses -->
+    <!-- Assets Held -->
     <div class="box rounded-box shadow flex items-center gap-4 p-6 bg-base-100">
       <div class="flex-shrink-0 flex items-center justify-center w-12 h-12 rounded-full bg-secondary/20">
         <span class="icon-[tabler--trending-up] text-2xl text-secondary"></span>
       </div>
       <div>
-        <div class="text-2xl font-bold" x-text="stats ? '+' + stats.gains + '%' : '-'">+3.2%</div>
-        <div class="text-base-content/70 text-sm">24h Gains/Losses</div>
-        <div class="text-xs text-base-content/50 mt-1">Compared to yesterday</div>
+        <div class="text-2xl font-bold" x-text="stats && stats.holdings ? stats.holdings.length : '-'">3</div>
+        <div class="text-base-content/70 text-sm">Assets Held</div>
+        <div class="text-xs text-base-content/50 mt-1">Unique coins</div>
       </div>
     </div>
-    <!-- Recent Activity Count -->
+    <!-- Transactions -->
     <div class="box rounded-box shadow flex items-center gap-4 p-6 bg-base-100">
       <div class="flex-shrink-0 flex items-center justify-center w-12 h-12 rounded-full bg-info/20">
         <span class="icon-[tabler--history] text-2xl text-info"></span>
       </div>
       <div>
-        <div class="text-2xl font-bold" x-text="stats ? stats.activity : '-'">5</div>
-        <div class="text-base-content/70 text-sm">Recent Activity</div>
-        <div class="text-xs text-base-content/50 mt-1">Transactions this week</div>
+        <div class="text-2xl font-bold" x-text="stats ? stats.totalTransactions : '-'">5</div>
+        <div class="text-base-content/70 text-sm">Transactions</div>
+        <div class="text-xs text-base-content/50 mt-1">This year</div>
       </div>
     </div>
   </div>
@@ -127,4 +124,33 @@ FlyonUI stat cards + ApexCharts area chart, chart initialized via Alpine.js
       </div>
     </div>
   </div>
+
+  <!-- Holdings Card -->
+  <template x-if="stats && stats.holdings && stats.holdings.length">
+    <div class="box rounded-box shadow bg-base-100 p-6 mt-8">
+      <h2 class="card-title mb-4">Current Holdings</h2>
+      <div class="overflow-x-auto">
+        <table class="table w-full text-sm">
+          <thead>
+            <tr>
+              <th>Asset</th>
+              <th>Balance</th>
+              <th>Price</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <template x-for="holding in stats.holdings" :key="holding.symbol">
+              <tr>
+                <td class="font-mono font-semibold" x-text="holding.symbol"></td>
+                <td x-text="holding.balance.toLocaleString(undefined, {maximumFractionDigits: 6})"></td>
+                <td x-text="currencySymbol + holding.price.toLocaleString(undefined, {maximumFractionDigits: 2})"></td>
+                <td class="font-semibold" x-text="currencySymbol + holding.value.toLocaleString(undefined, {maximumFractionDigits: 2})"></td>
+              </tr>
+            </template>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </template>
 </div>

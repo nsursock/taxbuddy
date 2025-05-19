@@ -55,8 +55,15 @@ export function registerWalletStore(Alpine, notyf) {
      * @param {string} chain - The chain to connect (e.g., 'ethereum', 'solana')
      */
     async selectChain(chain) {
+      this.connecting = true;
+      this.error = null;
+      
+      // Clear existing wallet state before connecting to new chain
+      this.disconnect();
+      
       this.chain = chain;
       localStorage.setItem('walletChain', chain);
+      
       if (chain.toLowerCase() === 'ethereum' && window.ethereum) {
         try {
           await window.ethereum.request({
@@ -87,6 +94,8 @@ export function registerWalletStore(Alpine, notyf) {
           notyf.error('Failed to connect to Solana.');
         }
       }
+      
+      this.connecting = false;
       this.needsChainSelect = false;
       if (window.HSOverlay && typeof window.HSOverlay.close === 'function') {
         window.HSOverlay.close('#middle-center-modal');
@@ -120,20 +129,35 @@ export function registerWalletStore(Alpine, notyf) {
     /**
      * Reconnect to the wallet if possible.
      */
-    reconnect() {
+    async reconnect() {
+      this.connecting = true;
+      this.error = null;
+      
       if (this.chain && this.chain.toLowerCase() === 'ethereum' && window.ethereum) {
-        window.ethereum.request({ method: 'eth_requestAccounts' }).then(accounts => {
+        try {
+          const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
           if (accounts && accounts.length > 0) {
             this.address = accounts[0];
             localStorage.setItem('walletAddress', this.address);
+          } else {
+            this.disconnect();
           }
-        });
+        } catch (e) {
+          this.disconnect();
+          notyf.error('Failed to reconnect to Ethereum.');
+        }
       } else if (this.chain && this.chain.toLowerCase() === 'solana' && window.okxwallet && window.okxwallet.solana) {
-        window.okxwallet.solana.connect().then(resp => {
+        try {
+          const resp = await window.okxwallet.solana.connect();
           this.address = resp.publicKey.toString();
           localStorage.setItem('walletAddress', this.address);
-        });
+        } catch (e) {
+          this.disconnect();
+          notyf.error('Failed to reconnect to Solana.');
+        }
       }
+      
+      this.connecting = false;
     }
   });
 

@@ -16,8 +16,28 @@
 export async function getHistoricalPrice(symbol, dateStr, currency, priceCache, fxCache) {
   const cacheKey = `${symbol}-${dateStr}-${currency}`;
   if (priceCache[cacheKey]) return priceCache[cacheKey];
-  const pair = symbol === 'eth' ? 'ETHUSDT' : symbol === 'sol' ? 'SOLUSDT' : null;
-  if (!pair) return null;
+  let pair = null;
+  let isStable = false;
+  if (symbol === 'eth') pair = 'ETHUSDT';
+  else if (symbol === 'sol') pair = 'SOLUSDT';
+  else if (symbol === 'usdc' || symbol === 'usdt') isStable = true;
+  if (!pair && !isStable) return null;
+  if (isStable) {
+    if (currency === 'USD') {
+      priceCache[cacheKey] = 1;
+      return 1;
+    }
+    if (currency === 'EUR') {
+      const fxRate = await getFxRate('USD', 'EUR', fxCache);
+      if (fxRate) {
+        priceCache[cacheKey] = fxRate;
+        return fxRate;
+      } else {
+        return null;
+      }
+    }
+    return null;
+  }
   const date = new Date(dateStr + 'T00:00:00Z');
   const startTime = date.getTime();
   const endTime = startTime + 24 * 60 * 60 * 1000;
@@ -69,6 +89,53 @@ export async function getFxRate(from, to, fxCache) {
     }
   } catch (e) {
     return null;
+  }
+  return null;
+}
+
+/**
+ * Fetch current price for a symbol (ETH/SOL/USDC/USDT) in the given currency (USD/EUR) using Binance API.
+ * @param {string} symbol - 'eth', 'sol', 'usdc', 'usdt'
+ * @param {string} currency - 'USD' or 'EUR'
+ * @param {object} fxCache
+ * @returns {Promise<number|null>}
+ */
+export async function getCurrentPrice(symbol, currency, fxCache) {
+  // Map symbol to Binance pair
+  let pair;
+  switch (symbol.toLowerCase()) {
+    case 'eth': pair = 'ETHUSDT'; break;
+    case 'sol': pair = 'SOLUSDT'; break;
+    case 'usdc': pair = 'USDCUSDT'; break;
+    case 'usdt': pair = 'USDTUSDT'; break; // always 1
+    default: return null;
+  }
+  let usdPrice = null;
+  try {
+    if (symbol.toLowerCase() === 'usdt') {
+      usdPrice = 1;
+    } else {
+      const url = `https://api.binance.com/api/v3/ticker/price?symbol=${pair}`;
+      const resp = await fetch(url);
+      const data = await resp.json();
+      if (data && data.price) {
+        usdPrice = parseFloat(data.price);
+      }
+    }
+  } catch (e) {
+    return null;
+  }
+  if (!usdPrice) return null;
+  if (currency === 'USD') {
+    return usdPrice;
+  }
+  if (currency === 'EUR') {
+    const fxRate = await getFxRate('USD', 'EUR', fxCache);
+    if (fxRate) {
+      return usdPrice * fxRate;
+    } else {
+      return null;
+    }
   }
   return null;
 } 

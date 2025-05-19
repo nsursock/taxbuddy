@@ -32,22 +32,32 @@ export function registerTransactionsTable() {
     },
 
     async onUserFilterChange() {
-      let loadingToast = null;
-      if (this.$store && this.$store.notyf) {
-        loadingToast = this.$store.notyf.info('Loading transactions...', { duration: 0 });
+      const year = this.$store.dashboardFilters.year;
+      const address = this.address;
+      const chain = this.chain;
+      // Only show Notyf if fetching
+      if (!this.$store.transactionsCache[year]) {
+        let loadingToast = null;
+        if (this.$store && this.$store.notyf) {
+          loadingToast = this.$store.notyf.info('Loading transactions...', { duration: 0 });
+        }
+        this.$store.transactionsCache[year] = await import('./model.js').then(m => m.getTransactions(address, chain, year));
+        if (loadingToast && this.$store && this.$store.notyf && this.$store.notyf.dismiss) {
+          this.$store.notyf.dismiss(loadingToast);
+        }
+        if (this.$store && this.$store.notyf) {
+          this.$store.notyf.success('Transactions loaded!');
+        }
       }
       await this.fetchTransactions();
-      if (loadingToast && this.$store && this.$store.notyf && this.$store.notyf.dismiss) {
-        this.$store.notyf.dismiss(loadingToast);
-      }
-      if (this.$store && this.$store.notyf) {
-        this.$store.notyf.success('Transactions loaded!');
-      }
     },
 
     async fetchTransactions() {
       this.loading = true;
-      const { filtered, totalPages, paginated } = await getFilteredPaginatedTransactions({
+      const year = this.$store.dashboardFilters.year;
+      // Use cached transactions for the year
+      const allTransactions = this.$store.transactionsCache[year] || [];
+      const { filtered, totalPages, paginated } = await import('./controller.js').then(m => m.getFilteredPaginatedTransactions({
         address: this.address,
         chain: this.chain,
         year: this.$store.dashboardFilters.year,
@@ -57,7 +67,7 @@ export function registerTransactionsTable() {
         pageSize: this.pageSize,
         priceCache: this.priceCache,
         fxCache: this.fxCache,
-      });
+      }, allTransactions));
       this.filteredTransactions = filtered;
       this.totalPages = totalPages;
       this.transactions = paginated;

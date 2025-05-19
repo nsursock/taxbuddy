@@ -38,23 +38,31 @@ export default function overviewStore() {
     },
 
     async onUserYearChange() {
-      let loadingToast = null;
-      if (this.$store && this.$store.notyf) {
-        loadingToast = this.$store.notyf.info('Loading transactions...', { duration: 0 });
+      const year = this.$store.dashboardFilters.year;
+      const address = this.address;
+      const chain = this.chain;
+      // Only show Notyf if fetching
+      if (!this.$store.transactionsCache[year]) {
+        let loadingToast = null;
+        if (this.$store && this.$store.notyf) {
+          loadingToast = this.$store.notyf.info('Loading transactions...', { duration: 0 });
+        }
+        this.$store.transactionsCache[year] = await getTransactions(address, chain, year);
+        if (loadingToast && this.$store && this.$store.notyf && this.$store.notyf.dismiss) {
+          this.$store.notyf.dismiss(loadingToast);
+        }
+        if (this.$store && this.$store.notyf) {
+          this.$store.notyf.success('Transactions loaded!');
+        }
       }
       await this.onFilterChange();
-      if (loadingToast && this.$store && this.$store.notyf && this.$store.notyf.dismiss) {
-        this.$store.notyf.dismiss(loadingToast);
-      }
-      if (this.$store && this.$store.notyf) {
-        this.$store.notyf.success('Transactions loaded!');
-      }
     },
 
     async onFilterChange() {
       this.loading = true;
-      // Fetch all transactions ONCE for the year
-      const allTransactions = await getTransactions(this.address, this.chain, this.$store.dashboardFilters.year);
+      const year = this.$store.dashboardFilters.year;
+      // Use cached transactions for the year
+      const allTransactions = this.$store.transactionsCache[year] || [];
       const { filtered, totalPages } = await getFilteredPaginatedTransactions({
         address: this.address,
         chain: this.chain,
@@ -65,7 +73,7 @@ export default function overviewStore() {
         pageSize: 1000,
         priceCache: this.priceCache,
         fxCache: this.fxCache,
-      });
+      }, allTransactions);
       this.filteredTransactions = filtered;
       this.totalPages = totalPages;
       this.loading = false;

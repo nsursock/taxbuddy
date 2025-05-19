@@ -35,6 +35,8 @@ document.addEventListener('alpine:init', () => {
     currency: 'USD',
     hideSmallTx: true,
   });
+  // Shared transaction cache, keyed by year
+  Alpine.store('transactionsCache', {});
   Alpine.data('walletManager', () => ({
     rememberedWallets: JSON.parse(localStorage.getItem('rememberedWallets') || '[]'),
     

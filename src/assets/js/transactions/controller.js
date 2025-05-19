@@ -3,8 +3,10 @@
 import { filterAndPaginateTransactions, invested, cashedOut, localSymbol } from './helpers.js';
 import { getTransactions } from './model.js';
 
-export async function getFilteredPaginatedTransactions({ address, chain, year, currency, hideSmallTx, page, pageSize, priceCache, fxCache }) {
-  const allTransactions = await getTransactions(address, chain, year);
+export async function getFilteredPaginatedTransactions({ address, chain, year, currency, hideSmallTx, page, pageSize, priceCache, fxCache }, allTransactions = null) {
+  if (!allTransactions) {
+    allTransactions = await getTransactions(address, chain, year);
+  }
   return await filterAndPaginateTransactions(allTransactions, {
     year,
     chain,
